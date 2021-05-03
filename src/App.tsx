@@ -6,6 +6,7 @@ import "./App.css";
 import * as leg1 from "../data-scripts/output/geojson_leg1.json";
 import * as leg2 from "../data-scripts/output/geojson_leg2.json";
 import * as leg3 from "../data-scripts/output/geojson_leg3.json";
+import * as leg4 from "../data-scripts/output/geojson_leg4.json";
 
 function App() {
   const mapContainer = useRef<HTMLElement>(null!);
@@ -64,6 +65,17 @@ function App() {
           },
         },
       });
+      map.addSource("leg4", {
+        type: "geojson",
+        data: {
+          type: "Feature",
+          properties: {},
+          geometry: {
+            type: "LineString",
+            coordinates: leg4.coordinates,
+          },
+        },
+      });
 
       // add the DEM source as a terrain layer with exaggerated height
       map.setTerrain({ source: "mapbox-dem", exaggeration: 1.5 });
@@ -117,6 +129,20 @@ function App() {
         },
         paint: {
           "line-color": "#3d3821",
+          "line-width": 8,
+        },
+      });
+
+      map.addLayer({
+        id: "leg4",
+        type: "line",
+        source: "leg4",
+        layout: {
+          "line-join": "round",
+          "line-cap": "round",
+        },
+        paint: {
+          "line-color": "#2aa160",
           "line-width": 8,
         },
       });
