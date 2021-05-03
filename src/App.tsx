@@ -3,7 +3,7 @@ import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "./App.css";
 
-import * as data from "../data-scripts/output/geojson_export.json";
+import * as leg1 from "../data-scripts/output/geojson_leg1.json";
 
 function App() {
   const mapContainer = useRef<HTMLElement>(null!);
@@ -27,8 +27,6 @@ function App() {
         maxzoom: 14,
       });
 
-      console.log("data", data);
-
       map.addSource("leg1", {
         type: "geojson",
         data: {
@@ -36,7 +34,7 @@ function App() {
           properties: {},
           geometry: {
             type: "LineString",
-            coordinates: data.coordinates,
+            coordinates: leg1.coordinates,
           },
         },
       });
