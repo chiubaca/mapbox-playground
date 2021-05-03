@@ -12,8 +12,8 @@ async function main() {
   try {
     const result = await client.directions({
       params: {
-        origin: "48.243921279996606, 14.763759153719763",
-        destination: "50.34568827203633, 40.20240876885365",
+        origin: "50.34568827203633, 40.20240876885365",
+        destination: "27.71570013984922, 85.3246534010905",
         mode: "walking",
         key: GOOGLE_API_KEY,
       },
@@ -26,7 +26,7 @@ async function main() {
 
     console.log("success!", result.data);
     fs.writeFileSync(
-      "./data-scripts/output/gmaps_leg4.json",
+      "./data-scripts/output/gmaps_leg5.json",
       JSON.stringify(result.data)
     );
   } catch (e) {
