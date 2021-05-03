@@ -10,24 +10,24 @@ console.log("GOOGLE_API_KEY:", GOOGLE_API_KEY);
 
 async function main() {
   try {
-    const leg1 = await client.directions({
+    const result = await client.directions({
       params: {
-        origin: "51.5232543641021, -0.07819152682298208",
-        destination: "52.26514799982734, 7.036375710947885",
+        origin: "50.81501306551635, 13.981899590806208",
+        destination: "48.243921279996606, 14.763759153719763",
         mode: "walking",
         key: GOOGLE_API_KEY,
       },
     });
 
-    if (leg1.data["error_message"]) {
-      console.log("GOOGLE ERROR: ", leg1.data["error_message"]);
+    if (result.data["error_message"]) {
+      console.log("GOOGLE ERROR: ", result.data["error_message"]);
       return;
     }
 
-    console.log("success!", leg1.data);
+    console.log("success!", result.data);
     fs.writeFileSync(
-      "./data-scripts/output/leg1.json",
-      JSON.stringify(leg1.data)
+      "./data-scripts/output/gmaps_leg3.json",
+      JSON.stringify(result.data)
     );
   } catch (e) {
     console.log("something went wrong", e);

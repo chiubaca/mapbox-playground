@@ -4,6 +4,8 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import "./App.css";
 
 import * as leg1 from "../data-scripts/output/geojson_leg1.json";
+import * as leg2 from "../data-scripts/output/geojson_leg2.json";
+import * as leg3 from "../data-scripts/output/geojson_leg3.json";
 
 function App() {
   const mapContainer = useRef<HTMLElement>(null!);
@@ -39,6 +41,30 @@ function App() {
         },
       });
 
+      map.addSource("leg2", {
+        type: "geojson",
+        data: {
+          type: "Feature",
+          properties: {},
+          geometry: {
+            type: "LineString",
+            coordinates: leg2.coordinates,
+          },
+        },
+      });
+
+      map.addSource("leg3", {
+        type: "geojson",
+        data: {
+          type: "Feature",
+          properties: {},
+          geometry: {
+            type: "LineString",
+            coordinates: leg3.coordinates,
+          },
+        },
+      });
+
       // add the DEM source as a terrain layer with exaggerated height
       map.setTerrain({ source: "mapbox-dem", exaggeration: 1.5 });
 
@@ -63,6 +89,34 @@ function App() {
         },
         paint: {
           "line-color": "#888",
+          "line-width": 8,
+        },
+      });
+
+      map.addLayer({
+        id: "leg2",
+        type: "line",
+        source: "leg2",
+        layout: {
+          "line-join": "round",
+          "line-cap": "round",
+        },
+        paint: {
+          "line-color": "#5a3f3f",
+          "line-width": 8,
+        },
+      });
+
+      map.addLayer({
+        id: "leg3",
+        type: "line",
+        source: "leg3",
+        layout: {
+          "line-join": "round",
+          "line-cap": "round",
+        },
+        paint: {
+          "line-color": "#3d3821",
           "line-width": 8,
         },
       });

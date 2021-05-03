@@ -1,13 +1,11 @@
-const data = require("./output/leg1.json");
+const data = require("./output/gmaps_leg3");
 var polyline = require("@mapbox/polyline");
 const fs = require("fs");
 
-// console.log(data.routes[0].overview_polyline);
+const result = polyline.toGeoJSON(data.routes[0].overview_polyline.points);
 
-// const result = polyline.toGeoJSON(data.routes[0].overview_polyline.points);
-
-console.log("Converted to geojson", typeof result);
+console.log("Converted to geojson", result);
 fs.writeFileSync(
-  "./data-scripts/output/geojson_export.json",
+  "./data-scripts/output/geojson_leg3.json",
   JSON.stringify(result)
 );
