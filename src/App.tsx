@@ -217,7 +217,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <p>Hello Vite, React, TS &amp; Mapbox!</p>
+        <p>Mapbox Playground</p>
       </header>
 
       <h2>Route Overview</h2>
