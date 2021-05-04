@@ -3,7 +3,7 @@ import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "./App.css";
 
-import * as route from "../data-scripts/output/combined.json";
+import * as path from "../data-scripts/output/combined.json";
 
 function App() {
   const mapContainer1 = useRef<HTMLElement>(null!);
@@ -29,14 +29,14 @@ function App() {
         maxzoom: 14,
       });
 
-      map.addSource("route", {
+      map.addSource("path", {
         type: "geojson",
         data: {
           type: "Feature",
           properties: {},
           geometry: {
             type: "LineString",
-            coordinates: route.coordinates,
+            coordinates: path.coordinates,
           },
         },
       });
@@ -56,9 +56,9 @@ function App() {
       });
 
       map.addLayer({
-        id: "route",
+        id: "path",
         type: "line",
-        source: "route",
+        source: "path",
         layout: {
           "line-join": "round",
           "line-cap": "round",
