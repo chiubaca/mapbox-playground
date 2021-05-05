@@ -1,18 +1,35 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "../App.css";
-
+import * as turf from "@turf/turf";
 import * as path from "../../data-scripts/output/combined.json";
+mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_KEY as string;
 
 export default function Map1() {
+  let map: mapboxgl.Map;
+
+  const line = turf.lineString(path.coordinates);
+
   const mapContainer = useRef<HTMLDivElement>(null!);
 
-  mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_KEY as string;
+  const [distanceAlongPath, setDistanceAlongPath] = useState(0);
+
+  const [locationAlongPath, setLocationAlongPath] = useState(
+    turf.along(line, distanceAlongPath, {
+      units: "miles",
+    })
+  );
+
+  const [marker, setMarker] = useState(
+    new mapboxgl.Marker({
+      color: "#FFFFFF",
+    }).setLngLat(locationAlongPath.geometry.coordinates as [number, number])
+  );
 
   //map 1
   useEffect(() => {
-    const map = new mapboxgl.Map({
+    map = new mapboxgl.Map({
       container: mapContainer.current,
       style: "mapbox://styles/mapbox/streets-v11",
       zoom: 3,
@@ -22,13 +39,9 @@ export default function Map1() {
     });
 
     map.on("load", function () {
-      map.addSource("mapbox-dem", {
-        type: "raster-dem",
-        url: "mapbox://mapbox.mapbox-terrain-dem-v1",
-        tileSize: 512,
-        maxzoom: 14,
-      });
+      console.log("loading map");
 
+      // add walking path
       map.addSource("path", {
         type: "geojson",
         data: {
@@ -40,22 +53,7 @@ export default function Map1() {
           },
         },
       });
-
-      // add the DEM source as a terrain layer with exaggerated height
-      map.setTerrain({ source: "mapbox-dem", exaggeration: 1.5 });
-
-      // add a sky layer that will show when the map is highly pitched
-      map.addLayer({
-        id: "sky",
-        type: "sky",
-        paint: {
-          "sky-type": "atmosphere",
-          "sky-atmosphere-sun": [0.0, 0.0],
-          "sky-atmosphere-sun-intensity": 15,
-        },
-      });
-
-      // add walking path
+      // style path
       map.addLayer({
         id: "path",
         type: "line",
@@ -71,8 +69,32 @@ export default function Map1() {
       });
     });
 
+    // add point to map
+    marker.addTo(map);
+
+    //Cleanup
     return () => map.remove();
   }, []);
 
-  return <div className="map-container" ref={mapContainer}></div>;
+  const increaseDistanceHandler = () => {
+    let currentDist = distanceAlongPath;
+
+    setDistanceAlongPath(currentDist + 100);
+    setLocationAlongPath(
+      turf.along(line, currentDist++, {
+        units: "miles",
+      })
+    );
+
+    marker.setLngLat(
+      locationAlongPath.geometry.coordinates as [number, number]
+    );
+  };
+
+  return (
+    <>
+      <div className="map-container" ref={mapContainer}></div>
+      <button onClick={increaseDistanceHandler}>Increase</button>
+    </>
+  );
 }
