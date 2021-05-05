@@ -4,7 +4,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import "../App.css";
 
 export default function Map2() {
-  const mapContainer = useRef<HTMLElement>(null!);
+  const mapContainer = useRef<HTMLDivElement>(null!);
 
   mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_KEY as string;
 

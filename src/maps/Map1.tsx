@@ -6,7 +6,7 @@ import "../App.css";
 import * as path from "../../data-scripts/output/combined.json";
 
 export default function Map1() {
-  const mapContainer = useRef<HTMLElement>(null!);
+  const mapContainer = useRef<HTMLDivElement>(null!);
 
   mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_KEY as string;
 
