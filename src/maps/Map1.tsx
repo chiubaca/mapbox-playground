@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { ReactEventHandler, useEffect, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "../App.css";
@@ -32,8 +32,8 @@ export default function Map1() {
     map = new mapboxgl.Map({
       container: mapContainer.current,
       style: "mapbox://styles/mapbox/streets-v11",
-      zoom: 3,
-      center: [4.6865447, 47.6878221],
+      zoom: 2.2,
+      center: [48.93556286533297, 46.57758836959426],
       pitch: 25,
       bearing: 0,
     });
@@ -71,6 +71,7 @@ export default function Map1() {
 
     // add point to map
     marker.addTo(map);
+    marker.setPopup(new mapboxgl.Popup().setHTML(`Lets GO!`)); // add popup
 
     //Cleanup
     return () => map.remove();
@@ -91,10 +92,32 @@ export default function Map1() {
     );
   };
 
+  const decreaseDistanceHandler = () => {
+    let currentDist = distanceAlongPath;
+
+    if (currentDist < 10) {
+      return;
+    }
+
+    setDistanceAlongPath(currentDist - 100);
+    setLocationAlongPath(
+      turf.along(line, currentDist++, {
+        units: "miles",
+      })
+    );
+
+    marker.setLngLat(
+      locationAlongPath.geometry.coordinates as [number, number]
+    );
+  };
+
   return (
     <>
       <div className="map-container" ref={mapContainer}></div>
-      <button onClick={increaseDistanceHandler}>Increase</button>
+      <div className="buttons">
+        <button onClick={decreaseDistanceHandler}>👈 Go backwards</button>
+        <button onClick={increaseDistanceHandler}>Go forward 👉</button>
+      </div>
     </>
   );
 }
