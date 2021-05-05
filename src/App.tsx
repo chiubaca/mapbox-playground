@@ -10,17 +10,17 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <p>Mapbox Playground</p>
+        <h1>NB̶ Mapbox Playground</h1>
       </header>
 
-      <h2>Route Overview</h2>
-      <Map1 />
-
-      <h2>3D terrain</h2>
-      <Map2 />
-
-      <h2>Animating camera along geojson path</h2>
-      <Map3 />
+      <div className="demo-container">
+        <h2>Route Overview</h2>
+        <Map1 />
+        <h2>3D terrain</h2>
+        <Map2 />
+        <h2>Animating camera along geojson path</h2>
+        <Map3 />
+      </div>
     </div>
   );
 }
