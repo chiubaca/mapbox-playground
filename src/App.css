@@ -24,26 +24,37 @@
   border-radius: 20px;
 }
 
-.buttons {
-  display: flex;
-}
-
+/* MFM screen styles */
 main {
   height: 100vh;
   width: 100vw;
 }
 
-.mfm-map {
+/* MFM map styles */
+
+.mfm--map {
   height: 100%;
   width: 100%;
+}
+
+.mfm--overlay {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: absolute;
+  z-index: 1;
 }
 
-.test-button {
+.mfm--hero-text {
+  font-size: 3rem;
+  color: rgb(255, 255, 255);
+  text-decoration: underline;
 }
 
-.overlay-canvas {
-  position: relative;
-  height: 100%;
-  width: 100%;
+.mfm--view-map {
+  padding-left: -360px;
+  margin: 0 0 -50px -74px;
+  cursor: pointer;
 }
