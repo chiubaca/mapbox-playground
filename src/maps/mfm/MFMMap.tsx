@@ -7,6 +7,7 @@ mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_KEY as string;
 export default function MFMMap() {
   let map: mapboxgl.Map;
   const mapContainer = useRef<HTMLDivElement>(null!);
+  const [dashBoardMode, setdashBoardMode] = useState(false);
 
   const requestRef = React.useRef(0);
 
@@ -41,17 +42,6 @@ export default function MFMMap() {
 
       // add the DEM source as a terrain layer with exaggerated height
       map.setTerrain({ source: "mapbox-dem" });
-
-      // add a sky layer that will show when the map is highly pitched
-      map.addLayer({
-        id: "sky",
-        type: "sky",
-        paint: {
-          "sky-type": "atmosphere",
-          "sky-atmosphere-sun": [0.0, 0.0],
-          "sky-atmosphere-sun-intensity": 15,
-        },
-      });
     });
 
     // start rotate animation
@@ -62,6 +52,7 @@ export default function MFMMap() {
 
   const viewMapHandler = () => {
     cancelAnimationFrame(requestRef.current);
+    setdashBoardMode(true);
     map.flyTo({
       center: [40.467, 35.703],
       zoom: 3.13,
@@ -72,37 +63,36 @@ export default function MFMMap() {
     });
   };
 
+  const HeroOverlay = (
+    <div className="mfm--overlay">
+      <p className="mfm--hero-text">Track our Progress</p>
+
+      <svg
+        onClick={viewMapHandler}
+        className="mfm--view-map "
+        width="48"
+        height="50"
+        viewBox="0 0 58 60"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <g>
+          <path
+            d="M57.06 39.3V20.7L46.14 5.7L28.56 0L10.92 5.7L0 20.7V39.3L10.92 54.3L28.56 60L46.14 54.3L57.06 39.3Z"
+            fill="#E4503A"
+          />
+          <text x="14" y="35" font-family="Verdana" font-size="12" fill="white">
+            View
+          </text>
+        </g>
+      </svg>
+    </div>
+  );
+  const DashBoardOverlay = <div>hello</div>;
+
   return (
     <div className="mfm--map" ref={mapContainer}>
-      <div className="mfm--overlay">
-        <p className="mfm--hero-text">Track our Progress</p>
-
-        <svg
-          onClick={viewMapHandler}
-          className="mfm--view-map "
-          width="48"
-          height="50"
-          viewBox="0 0 58 60"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <g>
-            <path
-              d="M57.06 39.3V20.7L46.14 5.7L28.56 0L10.92 5.7L0 20.7V39.3L10.92 54.3L28.56 60L46.14 54.3L57.06 39.3Z"
-              fill="#E4503A"
-            />
-            <text
-              x="14"
-              y="35"
-              font-family="Verdana"
-              font-size="12"
-              fill="white"
-            >
-              View
-            </text>
-          </g>
-        </svg>
-      </div>
+      {!dashBoardMode ? HeroOverlay : DashBoardOverlay}
     </div>
   );
 }
