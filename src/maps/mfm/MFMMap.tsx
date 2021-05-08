@@ -1,10 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
-// import * as turf from "@turf/turf";
+
 import mapboxgl from "mapbox-gl";
+import { currentDistance } from "../../helpers/calculateCurrentDistance";
+
 import { FeatureCollection, Geometry, GeoJsonProperties } from "geojson";
-import * as route from "../../../geodata/ldn_ktm_line.json";
+import * as ldn_ktm_route from "../../../geodata/ldn_ktm_line.json";
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_KEY as string;
-const data = route as FeatureCollection<Geometry, GeoJsonProperties>;
+const data = ldn_ktm_route as FeatureCollection<Geometry, GeoJsonProperties>;
+
+console.log("testing...", currentDistance());
 
 export default function MFMMap() {
   let map: mapboxgl.Map;
@@ -33,40 +37,10 @@ export default function MFMMap() {
     });
 
     map.on("load", function () {
-      console.log("whats route?", route);
       map.addSource("line", {
         type: "geojson",
         lineMetrics: true,
-        data: data,
-      });
-      // the layer must be of type 'line'
-      map.addLayer({
-        type: "line",
-        source: "line",
-        id: "line",
-        paint: {
-          "line-color": "red",
-          "line-width": 8,
-          // 'line-gradient' must be specified using an expression
-          // with the special 'line-progress' property
-          "line-gradient": [
-            "interpolate",
-            ["linear"],
-            ["line-progress"],
-            0,
-            "lime",
-
-            0.5,
-            "yellow",
-
-            1,
-            "red",
-          ],
-        },
-        layout: {
-          "line-cap": "round",
-          "line-join": "round",
-        },
+        data: currentDistance().line,
       });
 
       map.addSource("mapbox-dem", {
@@ -96,6 +70,35 @@ export default function MFMMap() {
       bearing: -20,
       pitch: 40,
       curve: 1,
+    });
+    //add the current walked distance
+    map.addLayer({
+      type: "line",
+      source: "line",
+      id: "line",
+      paint: {
+        "line-color": "red",
+        "line-width": 8,
+        // 'line-gradient' must be specified using an expression
+        // with the special 'line-progress' property
+        "line-gradient": [
+          "interpolate",
+          ["linear"],
+          ["line-progress"],
+          0,
+          "lime",
+
+          0.5,
+          "yellow",
+
+          1,
+          "red",
+        ],
+      },
+      layout: {
+        "line-cap": "round",
+        "line-join": "round",
+      },
     });
   };
 
