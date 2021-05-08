@@ -1,12 +1,12 @@
 import React from "react";
+import MFMMap from "../maps/mfm/MFMMap";
 
 function MFMDemo() {
   return (
     <div className="App">
-      <header className="App-header">
-        <h1>Mother Demo</h1>
-      </header>
-      HELLO!
+      <main>
+        <MFMMap />
+      </main>
     </div>
   );
 }

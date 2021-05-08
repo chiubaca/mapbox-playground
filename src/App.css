@@ -27,3 +27,23 @@
 .buttons {
   display: flex;
 }
+
+main {
+  height: 100vh;
+  width: 100vw;
+}
+
+.mfm-map {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+}
+
+.test-button {
+}
+
+.overlay-canvas {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
