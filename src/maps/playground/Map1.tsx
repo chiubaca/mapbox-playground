@@ -2,7 +2,7 @@ import React, { ReactEventHandler, useEffect, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import * as turf from "@turf/turf";
 
-import * as path from "../../data-scripts/output/combined.json";
+import * as path from "../../../data-scripts/output/combined.json";
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_KEY as string;
 
 export default function Map1() {

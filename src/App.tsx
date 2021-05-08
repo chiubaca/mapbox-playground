@@ -3,18 +3,18 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 import "./App.css";
 import "mapbox-gl/dist/mapbox-gl.css";
-import MothersDemo from "./screens/MothersDemo";
+import MothersDemo from "./screens/MFMDemo";
 import { Playground } from "./screens/Playground";
 
 function App() {
   return (
     <Router>
       <Switch>
-        <Route path="/playground">
-          <Playground />
+        <Route path="/mfm-demo">
+          <MothersDemo />
         </Route>
         <Route path="/">
-          <MothersDemo />
+          <Playground />
         </Route>
       </Switch>
     </Router>

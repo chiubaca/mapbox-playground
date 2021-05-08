@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import * as turf from "@turf/turf";
 import mapboxgl from "mapbox-gl";
 
-import * as path from "../../data-scripts/output/combined.json";
+import * as path from "../../../data-scripts/output/combined.json";
 
 export default function Map3() {
   const mapContainer = useRef<HTMLDivElement>(null!);

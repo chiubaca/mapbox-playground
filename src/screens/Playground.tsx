@@ -1,8 +1,8 @@
 import React from "react";
 
-import Map1 from "../maps/Map1";
-import Map2 from "../maps/Map2";
-import Map3 from "../maps/Map3";
+import Map1 from "../maps/playground/Map1";
+import Map2 from "../maps/playground/Map2";
+import Map3 from "../maps/playground/Map3";
 
 export function Playground() {
   return (

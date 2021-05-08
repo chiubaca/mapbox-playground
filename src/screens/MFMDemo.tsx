@@ -1,6 +1,6 @@
 import React from "react";
 
-function MothersDemo() {
+function MFMDemo() {
   return (
     <div className="App">
       <header className="App-header">
@@ -11,4 +11,4 @@ function MothersDemo() {
   );
 }
 
-export default MothersDemo;
+export default MFMDemo;
