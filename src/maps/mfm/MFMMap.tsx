@@ -4,11 +4,10 @@ import mapboxgl from "mapbox-gl";
 import { currentDistance } from "../../helpers/calculateCurrentDistance";
 
 import { FeatureCollection, Geometry, GeoJsonProperties } from "geojson";
-import * as ldn_ktm_route from "../../../geodata/ldn_ktm_line.json";
-mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_KEY as string;
-const data = ldn_ktm_route as FeatureCollection<Geometry, GeoJsonProperties>;
 
-console.log("testing...", currentDistance());
+// import { animateMarker } from "../../helpers/pulsingDot";
+
+mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_KEY as string;
 
 export default function MFMMap() {
   let map: mapboxgl.Map;
@@ -16,6 +15,8 @@ export default function MFMMap() {
   const [dashBoardMode, setdashBoardMode] = useState(false);
 
   const requestRef = React.useRef(0);
+
+  const currentDistanceInfo = currentDistance();
 
   const rotateCamera = (timestamp: number) => {
     // clamp the rotation between 0 -360 degrees
@@ -35,12 +36,34 @@ export default function MFMMap() {
       pitch: 60,
       bearing: 0,
     });
+    // const pDot = animateMarker(0);
 
     map.on("load", function () {
+      // map.addImage("pulsing-dot", pDot, { pixelRatio: 2 });
+
+      // distance walked so far line
       map.addSource("line", {
         type: "geojson",
         lineMetrics: true,
-        data: currentDistance().line,
+        data: currentDistanceInfo.line,
+      });
+
+      //distance walked so far point
+      map.addSource("points", {
+        type: "geojson",
+        data: {
+          type: "FeatureCollection",
+          features: [
+            {
+              type: "Feature",
+              properties: {},
+              geometry: {
+                type: "Point",
+                coordinates: currentDistanceInfo.point,
+              },
+            },
+          ],
+        },
       });
 
       map.addSource("mapbox-dem", {
@@ -71,7 +94,7 @@ export default function MFMMap() {
       pitch: 40,
       curve: 1,
     });
-    //add the current walked distance
+    //add the current walked distance line
     map.addLayer({
       type: "line",
       source: "line",
@@ -98,6 +121,16 @@ export default function MFMMap() {
       layout: {
         "line-cap": "round",
         "line-join": "round",
+      },
+    });
+    //add walked distance point
+    map.addLayer({
+      id: "points",
+      type: "circle",
+      source: "points",
+      paint: {
+        "circle-radius": 10,
+        "circle-color": "#007cbf",
       },
     });
   };
