@@ -10,6 +10,9 @@ export default function Map1() {
   let map: mapboxgl.Map;
 
   const line = turf.lineString(path.coordinates);
+  const length = turf.length(line, { units: "miles" });
+
+  console.log("distance >>>", length);
 
   const mapContainer = useRef<HTMLDivElement>(null!);
 
