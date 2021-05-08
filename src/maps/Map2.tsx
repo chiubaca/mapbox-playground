@@ -1,7 +1,5 @@
 import React, { useEffect, useRef } from "react";
 import mapboxgl from "mapbox-gl";
-import "mapbox-gl/dist/mapbox-gl.css";
-import "../App.css";
 
 export default function Map2() {
   const mapContainer = useRef<HTMLDivElement>(null!);
