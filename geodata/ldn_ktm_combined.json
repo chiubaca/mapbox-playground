@@ -1,7 +1,25 @@
 {
   "type": "FeatureCollection",
-  "properties": {},
+  "name": "ldn",
   "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "address": "Shoreditch, London Borough of Hackney, London, Greater London, England, EC2A 3BE, United Kingdom"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-0.0798926, 51.526669399999989]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "address": "Kathmandu, Bagmati Pradesh, Nepal" },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [85.313286112942436, 27.7096234]
+      }
+    },
     {
       "type": "Feature",
       "properties": {

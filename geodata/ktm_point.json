@@ -1,0 +1,14 @@
+{
+  "type": "FeatureCollection",
+  "name": "ldn",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": { "address": "Kathmandu, Bagmati Pradesh, Nepal" },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [85.313286112942436, 27.7096234]
+      }
+    }
+  ]
+}
