@@ -28,7 +28,7 @@ export default function MFMMap() {
   };
 
   const pulsingDotAnimation = (timestamp: number) => {
-    const throttleGrowthSpeed = 200; // lower is faster
+    const throttleGrowthSpeed = 85; // lower is faster
     const maxCircleSize = 10;
     // clamp point size to maxCircleSize
     const circleSize = (timestamp / throttleGrowthSpeed) % maxCircleSize;
