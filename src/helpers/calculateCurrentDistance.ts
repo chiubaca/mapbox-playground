@@ -20,5 +20,11 @@ export const currentDistance = () => {
 
   const slicedLine = turf.lineSlice(startCoordinate, endCoordinate, route);
 
-  return { point: endCoordinate, line: slicedLine };
+  return {
+    point:
+      slicedLine.geometry.coordinates[
+        slicedLine.geometry.coordinates.length - 1
+      ],
+    line: slicedLine,
+  };
 };
