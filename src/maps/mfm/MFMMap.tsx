@@ -1,9 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-
 import mapboxgl from "mapbox-gl";
-import { currentDistance } from "../../helpers/calculateCurrentDistance";
 
-// import { animateMarker } from "../../helpers/pulsingDot";
+import { currentDistance } from "../../helpers/calculateCurrentDistance";
 
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_KEY as string;
 
@@ -13,7 +11,7 @@ export default function MFMMap() {
   const [dashBoardMode, setDashboardMode] = useState(false);
 
   const cameraRotateRequestRef = React.useRef(0);
-  const puslsingDotRequestRef = React.useRef(0);
+  const pulsingDotRequestRef = React.useRef(0);
 
   const currentDistanceInfo = currentDistance();
 
@@ -30,18 +28,16 @@ export default function MFMMap() {
   };
 
   const pulsingDotAnimation = (timestamp: number) => {
-    //
     const throttleGrowthSpeed = 200; // lower is faster
     const maxCircleSize = 10;
     // clamp point size to maxCircleSize
     const circleSize = (timestamp / throttleGrowthSpeed) % maxCircleSize;
-
     map.setPaintProperty("location", "circle-radius", circleSize);
-
     // Request the next frame of the animation.
-    puslsingDotRequestRef.current = requestAnimationFrame(pulsingDotAnimation);
+    pulsingDotRequestRef.current = requestAnimationFrame(pulsingDotAnimation);
   };
 
+  // Initialise mapbox once
   useEffect(() => {
     map = new mapboxgl.Map({
       container: mapContainer.current,
@@ -144,10 +140,10 @@ export default function MFMMap() {
       source: "location",
       paint: {
         "circle-radius": 10,
-        "circle-color": "#007cbf",
+        "circle-color": "red",
       },
     });
-    puslsingDotRequestRef.current = requestAnimationFrame(pulsingDotAnimation);
+    pulsingDotRequestRef.current = requestAnimationFrame(pulsingDotAnimation);
   };
 
   const HeroOverlay = (
