@@ -3,8 +3,6 @@ import React, { useEffect, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import { currentDistance } from "../../helpers/calculateCurrentDistance";
 
-import { FeatureCollection, Geometry, GeoJsonProperties } from "geojson";
-
 // import { animateMarker } from "../../helpers/pulsingDot";
 
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_KEY as string;
@@ -12,19 +10,36 @@ mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_KEY as string;
 export default function MFMMap() {
   let map: mapboxgl.Map;
   const mapContainer = useRef<HTMLDivElement>(null!);
-  const [dashBoardMode, setdashBoardMode] = useState(false);
+  const [dashBoardMode, setDashboardMode] = useState(false);
 
-  const requestRef = React.useRef(0);
+  const cameraRotateRequestRef = React.useRef(0);
+  const puslsingDotRequestRef = React.useRef(0);
 
   const currentDistanceInfo = currentDistance();
 
-  const rotateCamera = (timestamp: number) => {
+  // Animation helpers
+  const rotateCameraAnimation = (timestamp: number) => {
     // clamp the rotation between 0 -360 degrees
     // Divide timestamp by 500 to slow rotation to ~10 degrees / sec
     map.rotateTo((timestamp / 500) % 360, { duration: 0 });
 
     // Request the next frame of the animation.
-    requestRef.current = requestAnimationFrame(rotateCamera);
+    cameraRotateRequestRef.current = requestAnimationFrame(
+      rotateCameraAnimation
+    );
+  };
+
+  const pulsingDotAnimation = (timestamp: number) => {
+    //
+    const throttleGrowthSpeed = 200; // lower is faster
+    const maxCircleSize = 10;
+    // clamp point size to maxCircleSize
+    const circleSize = (timestamp / throttleGrowthSpeed) % maxCircleSize;
+
+    map.setPaintProperty("location", "circle-radius", circleSize);
+
+    // Request the next frame of the animation.
+    puslsingDotRequestRef.current = requestAnimationFrame(pulsingDotAnimation);
   };
 
   useEffect(() => {
@@ -36,20 +51,17 @@ export default function MFMMap() {
       pitch: 60,
       bearing: 0,
     });
-    // const pDot = animateMarker(0);
 
     map.on("load", function () {
-      // map.addImage("pulsing-dot", pDot, { pixelRatio: 2 });
-
-      // distance walked so far line
+      // add route line source
       map.addSource("line", {
         type: "geojson",
         lineMetrics: true,
         data: currentDistanceInfo.line,
       });
 
-      //distance walked so far point
-      map.addSource("points", {
+      //add current location point source
+      map.addSource("location", {
         type: "geojson",
         data: {
           type: "FeatureCollection",
@@ -66,26 +78,28 @@ export default function MFMMap() {
         },
       });
 
+      // Add and set 3D Terrrain source
       map.addSource("mapbox-dem", {
         type: "raster-dem",
         url: "mapbox://mapbox.mapbox-terrain-dem-v1",
         tileSize: 512,
         maxzoom: 14,
       });
-
-      // add the DEM source as a terrain layer with exaggerated height
       map.setTerrain({ source: "mapbox-dem" });
     });
 
-    // start rotate animation
-    requestRef.current = requestAnimationFrame(rotateCamera);
+    // start camera rotate animation
+    cameraRotateRequestRef.current = requestAnimationFrame(
+      rotateCameraAnimation
+    );
 
     return () => map.remove();
   }, []);
 
   const viewMapHandler = () => {
-    cancelAnimationFrame(requestRef.current);
-    setdashBoardMode(true);
+    cancelAnimationFrame(cameraRotateRequestRef.current);
+
+    setDashboardMode(true);
     map.flyTo({
       center: [40.467, 35.703],
       zoom: 3.13,
@@ -125,14 +139,15 @@ export default function MFMMap() {
     });
     //add walked distance point
     map.addLayer({
-      id: "points",
+      id: "location",
       type: "circle",
-      source: "points",
+      source: "location",
       paint: {
         "circle-radius": 10,
         "circle-color": "#007cbf",
       },
     });
+    puslsingDotRequestRef.current = requestAnimationFrame(pulsingDotAnimation);
   };
 
   const HeroOverlay = (
@@ -153,7 +168,7 @@ export default function MFMMap() {
             d="M57.06 39.3V20.7L46.14 5.7L28.56 0L10.92 5.7L0 20.7V39.3L10.92 54.3L28.56 60L46.14 54.3L57.06 39.3Z"
             fill="#E4503A"
           />
-          <text x="14" y="35" font-family="Verdana" font-size="12" fill="white">
+          <text x="14" y="35" fontFamily="Verdana" fontSize="12" fill="white">
             View
           </text>
         </g>
