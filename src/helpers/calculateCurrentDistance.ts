@@ -1,5 +1,5 @@
 import * as turf from "@turf/turf";
-// import { FeatureCollection, Geometry, GeoJsonProperties } from "geojson";
+
 import * as ldn_ktm_route from "../../geodata/ldn_ktm_line.json";
 
 const LENGTH_OF_WALK_MILES = 4500;
@@ -26,5 +26,7 @@ export const currentDistance = () => {
         slicedLine.geometry.coordinates.length - 1
       ],
     line: slicedLine,
+    distanceSoFar: FAKE_CURRENT_DISTANCE_MILES,
+    distanceTogo: LENGTH_OF_WALK_MILES - FAKE_CURRENT_DISTANCE_MILES,
   };
 };
